@@ -13,13 +13,15 @@ class Main(QtWidgets.QMainWindow):
         self.populateList()
 
     def populateList(self):
+        count = 1
         for key, value in todo_dict.items():
             form_widget = uic.loadUi('gui/form.ui')
-            form_widget.btn_todo.setText(f'{key} - {value}')
+            form_widget.btn_todo.setText(f'Todo {count}: {key}')
             listWidgetItem = QListWidgetItem(self.todoList)
             listWidgetItem.setSizeHint(form_widget.sizeHint())
             self.todoList.addItem(listWidgetItem)
             self.todoList.setItemWidget(listWidgetItem, form_widget)
+            count += 1
         
     def show_detail(self):
         detail.show()
@@ -39,14 +41,13 @@ class Detail(QtWidgets.QMainWindow):
         self.close()
       
 if __name__ == '__main__':
-    
     import sqlite3
     conn = sqlite3.connect('todo.db')
     cursor = conn.cursor()
     query = "SELECT * FROM todo;"
     cursor.execute(query)
     rows = cursor.fetchall()
-    todo_dict = {row[0]: row[1] for row in rows}
+    todo_dict = {row[1]: row[2] for row in rows}
     print(todo_dict)
     conn.close()
     
