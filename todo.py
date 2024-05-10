@@ -12,9 +12,6 @@ class Main(QtWidgets.QMainWindow):
         self.bt_todo2.clicked.connect(self.show_todo2)
         self.bt_todo3.clicked.connect(self.show_todo3)
         self.bt_todo4.clicked.connect(self.show_todo4)
-        self.bt_todo5.clicked.connect(self.show_todo5)
-        self.bt_todo6.clicked.connect(self.show_todo6)
-        self.bt_todo7.clicked.connect(self.show_todo7)
         
     def show_todo1(self):
         todo1Page.show()
@@ -30,18 +27,6 @@ class Main(QtWidgets.QMainWindow):
         
     def show_todo4(self):
         todo4Page.show()
-        self.close()
-        
-    def show_todo5(self):
-        todo5Page.show()
-        self.close()
-        
-    def show_todo6(self):
-        todo6Page.show()
-        self.close()
-        
-    def show_todo7(self):
-        todo7Page.show()
         self.close()
         
 class Todo1(QtWidgets.QMainWindow):
@@ -93,42 +78,6 @@ class Todo4(QtWidgets.QMainWindow):
             MainPage.show()
             self.close()  
       
-class Todo5(QtWidgets.QMainWindow):
-        def __init__(self):
-            super().__init__()
-            uic.loadUi('gui todo/todo5.ui', self)
-            
-            self.bt_return5.clicked.connect(self.show_Main)
-            self.bt_finish5.clicked.connect(self.show_Main)
-            
-        def show_Main(self):
-            MainPage.show()
-            self.close()      
-            
-class Todo6(QtWidgets.QMainWindow):
-        def __init__(self):
-            super().__init__()
-            uic.loadUi('gui todo/todo6.ui', self)
-            
-            self.bt_return6.clicked.connect(self.show_Main)
-            self.bt_finish6.clicked.connect(self.show_Main)
-            
-        def show_Main(self):
-            MainPage.show()
-            self.close()   
-            
-class Todo7(QtWidgets.QMainWindow):
-        def __init__(self):
-            super().__init__()
-            uic.loadUi('gui todo/todo7.ui', self)
-            
-            self.bt_return7.clicked.connect(self.show_Main)
-            self.bt_finish7.clicked.connect(self.show_Main)
-            
-        def show_Main(self):
-            MainPage.show()
-            self.close()  
-      
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     
@@ -136,9 +85,6 @@ if __name__ == '__main__':
     todo2Page = Todo2()
     todo3Page = Todo3()
     todo4Page = Todo4()
-    todo5Page = Todo5()
-    todo6Page = Todo6()
-    todo7Page = Todo7()
     MainPage = Main()
 
     MainPage.show()
