@@ -8,7 +8,7 @@ class Main(QtWidgets.QMainWindow):
         super().__init__()
         uic.loadUi('gui/main.ui', self)
         
-        self.bt_todo1.clicked.connect(self.show_todo1)
+        # self.bt_todo1.clicked.connect(self.show_todo1)
         
     def show_detail(self):
         detail.show()
@@ -28,6 +28,7 @@ class Detail(QtWidgets.QMainWindow):
         self.close()
       
 if __name__ == '__main__':
+    
     app = QtWidgets.QApplication(sys.argv)
     
     detail = Detail()
