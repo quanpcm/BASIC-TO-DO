@@ -103,7 +103,7 @@ hr { height: 1px; border-width: 0; }
 li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:700;&quot;&gt; LIST 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:700;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
     <widget class="QPushButton" name="bt_return1">
@@ -183,7 +183,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <x>10</x>
       <y>80</y>
       <width>391</width>
-      <height>571</height>
+      <height>621</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -193,6 +193,60 @@ background: solid rgb(255, 245, 190);
 color: gb(255, 136, 0)</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="btn_todo">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>371</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 2.75px solid rgb(255, 170, 0);
+  border-radius: 20px;
+background: solid rgb(255, 245, 190);
+color: rgb(255, 136, 0)</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_todo_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>170</y>
+      <width>371</width>
+      <height>521</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 2.75px solid rgb(255, 170, 0);
+  border-radius: 20px;
+background: solid rgb(255, 245, 190);
+color: rgb(255, 136, 0)</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>label_2</zorder>
    <zorder>label_3</zorder>
@@ -200,6 +254,8 @@ color: gb(255, 136, 0)</string>
    <zorder>label_5</zorder>
    <zorder>widget</zorder>
    <zorder>txted_todo1</zorder>
+   <zorder>btn_todo</zorder>
+   <zorder>btn_todo_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

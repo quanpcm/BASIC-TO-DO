@@ -7,10 +7,14 @@ class Main(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('gui/main.ui', self)
-        
+        todo = uic.loadUi('gui/form.ui')
         # for key, value in todo_dict.items():
         #     self.todoList.addItem(f'{key} - {value}')
+        
         self.populateList()
+
+        self.btn_plus.clicked.connect(self.populateList)
+        self.todo.clicked.connect(self.show_detail)
 
     def populateList(self):
         count = 1
