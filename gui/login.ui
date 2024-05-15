@@ -55,7 +55,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </property>
    </widget>
   </widget>
-  <widget class="QPlainTextEdit" name="plainTextEdit">
+  <widget class="QPlainTextEdit" name="txt_name">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -78,7 +78,7 @@ color: rgb(170, 108, 0);
     <string/>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="plainTextEdit_2">
+  <widget class="QPlainTextEdit" name="txt_pass">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -154,7 +154,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;password&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="btn_login">
    <property name="geometry">
     <rect>
      <x>130</x>
@@ -174,7 +174,7 @@ text-indent: 20px;</string>
     <string>LOGIN</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="btn_register">
    <property name="geometry">
     <rect>
      <x>130</x>
@@ -185,7 +185,9 @@ text-indent: 20px;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">color: rgb(255, 136, 0);
-background: solid rgb(255, 229, 33);
+border: 4px solid rgb(255, 170, 0);
+  border-radius: 9px;
+background: solid rgb(255, 245, 190);
 text-indent: 20px;</string>
    </property>
    <property name="text">
