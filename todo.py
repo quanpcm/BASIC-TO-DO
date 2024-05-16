@@ -27,7 +27,7 @@ class Main(QtWidgets.QMainWindow):
             self.todoList.addItem(listWidgetItem)
             self.todoList.setItemWidget(listWidgetItem, form_widget)
             listWidgetItem.setData(QtCore.Qt.UserRole, id)
-    
+
     def onItemClicked(self, item):
         id = item.data(QtCore.Qt.UserRole) 
         detail = Detail(id)
@@ -50,7 +50,13 @@ class Detail(QtWidgets.QMainWindow, QtCore.QThread):
         self.bt_finish1.clicked.connect(self.stop)        
         self.bt_return1.clicked.connect(self.show_Main)
         self.bt_finish1.clicked.connect(self.show_Main)
-        
+
+    def load_Data(self):
+        for id in todo_dict.items():
+            conn = sqlite3.connect('todo.db')
+            c = conn.cursor()
+            c.execute("SELECT * FROM todo WHERE id = ?", (id))
+            
     def show_Main(self):
         MainPage.show()
         self.close()
@@ -145,7 +151,6 @@ class Register(QtWidgets.QMainWindow):
         self.close()
         
 if __name__ == '__main__':
-    import sqlite3
     conn = sqlite3.connect('todo.db')
     cursor = conn.cursor()
     query = "SELECT * FROM todo;"
