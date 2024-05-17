@@ -56,6 +56,9 @@ class Detail(QtWidgets.QMainWindow, QtCore.QThread):
             conn = sqlite3.connect('todo.db')
             c = conn.cursor()
             c.execute("SELECT * FROM todo WHERE id = ?", (id))
+            cursor.execute(query)
+            data = {column[1] for column in columns}
+            
             
     def show_Main(self):
         MainPage.show()
