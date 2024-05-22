@@ -1,9 +1,12 @@
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtWidgets import QWidget, QListWidgetItem, QPushButton,QMessageBox
 from PyQt6 import uic
+from insertdata import InsertData
+from updatedata import UpdateData
 import sys
 import logging
 import sqlite3
+import queue
 from queue import Empty
 
 class Main(QtWidgets.QMainWindow):
@@ -19,79 +22,47 @@ class Main(QtWidgets.QMainWindow):
         self.listWidget.itemClicked.connect(self.onItemClicked)
         
     def populateList(self):
-        for key, value, id in todo_dict.items():
+        for key, value, idd in todo_dict_main.items():
             form_widget = uic.loadUi('gui/form.ui')
             form_widget.btn_todo.setText(f'Todo {value}: {key}')
             listWidgetItem = QListWidgetItem()
             listWidgetItem.setSizeHint(form_widget.sizeHint())
             self.todoList.addItem(listWidgetItem)
             self.todoList.setItemWidget(listWidgetItem, form_widget)
-            listWidgetItem.setData(QtCore.Qt.UserRole, id)
+            listWidgetItem.setData(QtCore.Qt.UserRole, idd)
 
     def onItemClicked(self, item):
-        id = item.data(QtCore.Qt.UserRole) 
-        detail = Detail(id)
+        idd = item.data(QtCore.Qt.UserRole) 
+        detail = Detail(idd)
         detail.show()
         self.close()
-        
-    def show_detail(self):
-        detail.show()
-        self.close()
-       
+           
 class Detail(QtWidgets.QMainWindow, QtCore.QThread):
-    def __init__(self, update_queue):
+    def __init__(self, idd):
         super().__init__()
         uic.loadUi('gui/detail.ui', self)
-        self.update_queue = update_queue
-        self.running = True
+        self.idd = idd
         
-        self.run() 
-        self.bt_return1.clicked.connect(self.stop)
-        self.bt_finish1.clicked.connect(self.stop)        
+        self.load_Data(idd)
         self.bt_return1.clicked.connect(self.show_Main)
         self.bt_finish1.clicked.connect(self.show_Main)
-
-    def load_Data(self):
-        for id in todo_dict.items():
-            conn = sqlite3.connect('todo.db')
-            c = conn.cursor()
-            c.execute("SELECT * FROM todo WHERE id = ?", (id))
-            cursor.execute(query)
-            data = {column[1] for column in columns}
-            
+        
+    def load_Data(self, idd):
+        conn = sqlite3.connect('todo.db')
+        c = conn.cursor()
+        c.execute("SELECT * FROM todo WHERE id = ?", (idd))
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        todo_dict_detail = {row[2]: (row[1]) for row in rows}
+        print(todo_dict_detail)
+        conn.close()
+        for content, title in todo_dict_main.items():
+            self.txt_tilte.setText(title)
+            self.txt_content.setText(content)
             
     def show_Main(self):
         MainPage.show()
         self.close()
-    
-    def run(self):
-        for key, value in todo_dict.items():
-            conn = sqlite3.connect('todo.db')
-            try:
-                while self.running:
-                    try:
-                        # Block until an item is available
-                        key, value = self.update_queue.get()
-                        c = conn.cursor()
-                        c.execute("""
-                                UPDATE todo
-                                SET
-                                    id = ?,
-                                    title = ?
-                                WHERE content = ?
-                                """, ("", key, value))
-                        conn.commit()
-                        self.update_queue.task_done()
-                    except Empty:
-                        continue
-                    except Exception as e:
-                        logging.error("Error in database operation: " + str(e))
-            finally:
-                conn.close()
-
-    def stop(self):
-        self.running = False
-        self.update_queue.put((None, None, None))
         
 class Login(QtWidgets.QMainWindow): 
     def __init__(self):
@@ -128,8 +99,7 @@ class Register(QtWidgets.QMainWindow):
         super().__init__()
         uic.loadUi('gui/register.ui', self)
         
-        self.txt_name.toPlainText(self.login)
-        self.btn_create.clicked.connect(self.showMain)
+        self.btn_create.clicked.connect(self.login)
         
     def login(self):
         username = self.txt_newname.toPlainText()
@@ -148,19 +118,18 @@ class Register(QtWidgets.QMainWindow):
             msg_box.setText('please comfirm new password')
             msg_box.exec()
             return
-        
-    def showMain(self):
+
         MainPage.show()
         self.close()
-        
+           
 if __name__ == '__main__':
     conn = sqlite3.connect('todo.db')
     cursor = conn.cursor()
     query = "SELECT * FROM todo;"
     cursor.execute(query)
     rows = cursor.fetchall()
-    todo_dict = {row[2]: (row[1], row[0]) for row in rows}
-    print(todo_dict)
+    todo_dict_main = {row[1]: (row[2], row[0]) for row in rows}
+    print(todo_dict_main)
     conn.close()
     
     app = QtWidgets.QApplication(sys.argv)

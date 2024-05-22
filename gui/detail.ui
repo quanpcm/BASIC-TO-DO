@@ -80,7 +80,7 @@
 background: solid rgb(255, 245, 190);
 color: black</string>
     </property>
-    <widget class="QTextBrowser" name="txt_tiltle">
+    <widget class="QTextBrowser" name="txt_til">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -177,7 +177,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <pixmap>../pixel_picture/New Piskel (2)/pixer_duck10.png</pixmap>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="txted_todo1">
+   <widget class="QPlainTextEdit" name="txt_jn">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -193,23 +193,7 @@ background: solid rgb(255, 245, 190);
 color: gb(255, 136, 0)</string>
     </property>
    </widget>
-   <widget class="QTextBrowser" name="textBrowser">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>90</y>
-      <width>371</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: 2.75px solid rgb(255, 170, 0);
-  border-radius: 20px;
-background: solid rgb(255, 245, 190);
-color: rgb(255, 136, 0)</string>
-    </property>
-   </widget>
-   <widget class="QTextBrowser" name="txt_content">
+   <widget class="QTextEdit" name="txt_content">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -225,15 +209,31 @@ background: solid rgb(255, 245, 190);
 color: rgb(255, 136, 0)</string>
     </property>
    </widget>
+   <widget class="QTextEdit" name="txt_tiltle">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>371</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 2.75px solid rgb(255, 170, 0);
+  border-radius: 20px;
+background: solid rgb(255, 245, 190);
+color: rgb(255, 136, 0)</string>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>label_2</zorder>
    <zorder>label_3</zorder>
    <zorder>label_4</zorder>
    <zorder>label_5</zorder>
    <zorder>widget</zorder>
-   <zorder>txted_todo1</zorder>
-   <zorder>textBrowser</zorder>
+   <zorder>txt_jn</zorder>
    <zorder>txt_content</zorder>
+   <zorder>txt_tiltle</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
