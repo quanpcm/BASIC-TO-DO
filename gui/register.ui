@@ -224,6 +224,26 @@ color: rgb(170, 108, 0);
     <string/>
    </property>
   </widget>
+  <widget class="QPushButton" name="btn_create_2">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>580</y>
+     <width>91</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 136, 0);
+border: 4px solid rgb(255, 170, 0);
+  border-radius: 9px;
+background: solid rgb(255, 245, 190);
+text-indent: 20px;</string>
+   </property>
+   <property name="text">
+    <string>BACK</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

@@ -1,6 +1,8 @@
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtWidgets import QWidget, QListWidgetItem, QPushButton, QMessageBox
 from PyQt6 import uic
+from insertdata import InsertData
+from updatedata import UpdateData
 import sys
 import sqlite3
 
@@ -42,6 +44,16 @@ class Main(QtWidgets.QMainWindow):
         listWidgetItem.setSizeHint(form_widget.sizeHint())
         self.todoList.addItem(listWidgetItem)
         self.todoList.setItemWidget(listWidgetItem, form_widget)
+        
+        new_title = ""
+        new_content = ""
+        conn = sqlite3.connect('todo.db')
+        cursor = conn.cursor()
+        cursor.execute("""
+                        INSERT INTO todo (title, content)
+                        VALUES (?,?)
+                        """, (new_title, new_content))
+        conn.commit() 
 
     def onButtonClicked(self, idd):
         self.detail = Detail(idd)
@@ -110,6 +122,7 @@ class Register(QtWidgets.QMainWindow):
         uic.loadUi('gui/register.ui', self)
         
         self.btn_create.clicked.connect(self.create_account)
+        self.btn_back.clicked.connect(self.showLogin)
         
     def create_account(self):
         username = self.txt_newname.toPlainText()
@@ -136,6 +149,9 @@ class Register(QtWidgets.QMainWindow):
         msg_box.setText(message)
         msg_box.exec()
 
+    def showLogin(self):
+        self.close()
+        LoginPage.show()
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     
@@ -143,7 +159,7 @@ if __name__ == '__main__':
     LoginPage = Login()
     RegisterPage = Register()
 
-    MainPage.show()
+    LoginPage.show()
     
     msg_box = QMessageBox()
     msg_box.setWindowTitle('!!!SOMETHING WRONG!!!')
