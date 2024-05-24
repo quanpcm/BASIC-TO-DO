@@ -15,21 +15,28 @@ class Main(QtWidgets.QMainWindow):
         uic.loadUi('gui/main.ui', self)
         # for key, value in todo_dict.items():
         #     self.todoList.addItem(f'{key} - {value}')
-    
-        self.populateList()
-
-        self.btn_plus.clicked.connect(self.populateList)
-        self.listWidget.itemClicked.connect(self.onItemClicked)
         
-    def populateList(self):
-        for key, value, idd in todo_dict_main.items():
+        self.Todo_List()
+
+        self.btn_plus.clicked.connect(self.New_Todo)
+        self.todoList.itemClicked.connect(self.onItemClicked)
+        
+    def Todo_List(self):
+        for key, (value, idd) in todo_dict_main.items():
             form_widget = uic.loadUi('gui/form.ui')
-            form_widget.btn_todo.setText(f'Todo {value}: {key}')
+            form_widget.btn_todo.setText(f'{key}')
             listWidgetItem = QListWidgetItem()
             listWidgetItem.setSizeHint(form_widget.sizeHint())
             self.todoList.addItem(listWidgetItem)
             self.todoList.setItemWidget(listWidgetItem, form_widget)
-            listWidgetItem.setData(QtCore.Qt.UserRole, idd)
+            listWidgetItem.setData(QtCore.Qt.ItemDataRole.UserRole, idd)
+
+    def New_Todo(self):
+            form_widget = uic.loadUi('gui/form.ui')
+            listWidgetItem = QListWidgetItem()
+            listWidgetItem.setSizeHint(form_widget.sizeHint())
+            self.todoList.addItem(listWidgetItem)
+            self.todoList.setItemWidget(listWidgetItem, form_widget)
 
     def onItemClicked(self, item):
         idd = item.data(QtCore.Qt.UserRole) 
@@ -50,14 +57,14 @@ class Detail(QtWidgets.QMainWindow, QtCore.QThread):
     def load_Data(self, idd):
         conn = sqlite3.connect('todo.db')
         c = conn.cursor()
-        c.execute("SELECT * FROM todo WHERE id = ?", (idd))
-        cursor.execute(query)
-        rows = cursor.fetchall()
+        c.execute("SELECT * FROM todo WHERE id = ?", (idd,))
+        rows = c.fetchall()
         todo_dict_detail = {row[2]: (row[1]) for row in rows}
         print(todo_dict_detail)
         conn.close()
-        for content, title in todo_dict_main.items():
-            self.txt_tilte.setText(title)
+        
+        for content, title in todo_dict_detail.items():
+            self.txt_tiltle.setText(title)
             self.txt_content.setText(content)
             
     def show_Main(self):
@@ -75,6 +82,7 @@ class Login(QtWidgets.QMainWindow):
     def showRegister(self):
         RegisterPage.show()
         self.close()
+        
         
     def login(self):
         email = self.txt_name.toPlainText()
@@ -134,12 +142,13 @@ if __name__ == '__main__':
     
     app = QtWidgets.QApplication(sys.argv)
     
-    detail = Detail()
-    MainPage = Main()
-    LoginPage = Login()
-    RegisterPage = Register()
+    for title, (content, idd) in todo_dict_main.items():
+        detail = Detail(1)
+        MainPage = Main()
+        LoginPage = Login()
+        RegisterPage = Register()
 
-    MainPage.show()
+    detail.show()
     
     msg_box = QMessageBox()
     msg_box.setWindowTitle('!!!SOMETHING WRONG!!!')
