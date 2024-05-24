@@ -13,7 +13,6 @@ class Main(QtWidgets.QMainWindow):
         self.Todo_List()
 
         self.btn_plus.clicked.connect(self.New_Todo)
-        self.todoList.itemClicked.connect(self.onItemClicked)
 
     def load_todo_data(self):
         conn = sqlite3.connect('todo.db')
@@ -44,15 +43,7 @@ class Main(QtWidgets.QMainWindow):
         self.todoList.addItem(listWidgetItem)
         self.todoList.setItemWidget(listWidgetItem, form_widget)
 
-    def onItemClicked(self, item):
-        idd = item.data(32)
-        print(f"Clicked item ID: {idd}")
-        self.detail = Detail(idd)
-        self.detail.show()
-        self.close()
-
     def onButtonClicked(self, idd):
-        print(f"Button clicked with ID: {idd}")
         self.detail = Detail(idd)
         self.detail.show()
         self.close()
