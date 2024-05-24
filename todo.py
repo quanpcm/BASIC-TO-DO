@@ -1,50 +1,63 @@
 from PyQt6 import QtWidgets, QtCore
-from PyQt6.QtWidgets import QWidget, QListWidgetItem, QPushButton,QMessageBox
+from PyQt6.QtWidgets import QWidget, QListWidgetItem, QPushButton, QMessageBox
 from PyQt6 import uic
-from insertdata import InsertData
-from updatedata import UpdateData
 import sys
-import logging
 import sqlite3
-import queue
-from queue import Empty
 
 class Main(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('gui/main.ui', self)
-        # for key, value in todo_dict.items():
-        #     self.todoList.addItem(f'{key} - {value}')
-        
+
+        self.todo_dict_main = self.load_todo_data()
         self.Todo_List()
 
         self.btn_plus.clicked.connect(self.New_Todo)
         self.todoList.itemClicked.connect(self.onItemClicked)
-        
+
+    def load_todo_data(self):
+        conn = sqlite3.connect('todo.db')
+        cursor = conn.cursor()
+        query = "SELECT * FROM todo;"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        todo_dict = {row[1]: (row[2], row[0]) for row in rows}
+        conn.close()
+        return todo_dict
+
     def Todo_List(self):
-        for key, (value, idd) in todo_dict_main.items():
+        for key, (value, idd) in self.todo_dict_main.items():
             form_widget = uic.loadUi('gui/form.ui')
             form_widget.btn_todo.setText(f'{key}')
-            listWidgetItem = QListWidgetItem()
+            form_widget.btn_todo.clicked.connect(lambda _, idd=idd: self.onButtonClicked(idd))
+            listWidgetItem = QtWidgets.QListWidgetItem()
             listWidgetItem.setSizeHint(form_widget.sizeHint())
             self.todoList.addItem(listWidgetItem)
             self.todoList.setItemWidget(listWidgetItem, form_widget)
-            listWidgetItem.setData(QtCore.Qt.ItemDataRole.UserRole, idd)
+            listWidgetItem.setData(32, idd)
+            print(f"Added item with ID: {idd}")
 
     def New_Todo(self):
-            form_widget = uic.loadUi('gui/form.ui')
-            listWidgetItem = QListWidgetItem()
-            listWidgetItem.setSizeHint(form_widget.sizeHint())
-            self.todoList.addItem(listWidgetItem)
-            self.todoList.setItemWidget(listWidgetItem, form_widget)
+        form_widget = uic.loadUi('gui/form.ui')
+        listWidgetItem = QtWidgets.QListWidgetItem()
+        listWidgetItem.setSizeHint(form_widget.sizeHint())
+        self.todoList.addItem(listWidgetItem)
+        self.todoList.setItemWidget(listWidgetItem, form_widget)
 
     def onItemClicked(self, item):
-        idd = item.data(QtCore.Qt.UserRole) 
-        detail = Detail(idd)
-        detail.show()
+        idd = item.data(32)
+        print(f"Clicked item ID: {idd}")
+        self.detail = Detail(idd)
+        self.detail.show()
         self.close()
-           
-class Detail(QtWidgets.QMainWindow, QtCore.QThread):
+
+    def onButtonClicked(self, idd):
+        print(f"Button clicked with ID: {idd}")
+        self.detail = Detail(idd)
+        self.detail.show()
+        self.close()
+
+class Detail(QtWidgets.QMainWindow):
     def __init__(self, idd):
         super().__init__()
         uic.loadUi('gui/detail.ui', self)
@@ -58,14 +71,12 @@ class Detail(QtWidgets.QMainWindow, QtCore.QThread):
         conn = sqlite3.connect('todo.db')
         c = conn.cursor()
         c.execute("SELECT * FROM todo WHERE id = ?", (idd,))
-        rows = c.fetchall()
-        todo_dict_detail = {row[2]: (row[1]) for row in rows}
-        print(todo_dict_detail)
-        conn.close()
-        
-        for content, title in todo_dict_detail.items():
+        row = c.fetchone()
+        if row:
+            title, content = row[1], row[2]
             self.txt_tiltle.setText(title)
             self.txt_content.setText(content)
+        conn.close()
             
     def show_Main(self):
         MainPage.show()
@@ -83,76 +94,69 @@ class Login(QtWidgets.QMainWindow):
         RegisterPage.show()
         self.close()
         
-        
     def login(self):
         email = self.txt_name.toPlainText()
         password = self.txt_pass.toPlainText()
         if not email:
-            msg_box.setText('please enter username')
-            msg_box.exec()
+            self.show_message('Please enter username')
             return
         if not password:
-            msg_box.setText('please enter password')
-            msg_box.exec()
+            self.show_message('Please enter password')
             return
         if email == 'minhquan' and password == '09090909':
             self.close()
             MainPage.show()
         else:
-            msg_box.setText('please check again the password or username')
-            msg_box.exec()
+            self.show_message('Please check again the password or username')
+    
+    def show_message(self, message):
+        msg_box.setText(message)
+        msg_box.exec()
                         
 class Register(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('gui/register.ui', self)
         
-        self.btn_create.clicked.connect(self.login)
+        self.btn_create.clicked.connect(self.create_account)
         
-    def login(self):
+    def create_account(self):
         username = self.txt_newname.toPlainText()
         password = self.txt_newpass.toPlainText()
         comfi_password = self.txt_compass.toPlainText()
         
         if not username:
-            msg_box.setText('please enter new username')
-            msg_box.exec()
+            self.show_message('Please enter new username')
             return
         if not password:
-            msg_box.setText('please enter new password')
-            msg_box.exec()
+            self.show_message('Please enter new password')
             return
         if not comfi_password:
-            msg_box.setText('please comfirm new password')
-            msg_box.exec()
+            self.show_message('Please confirm new password')
+            return
+        if password != comfi_password:
+            self.show_message('Passwords do not match')
             return
 
         MainPage.show()
         self.close()
-           
-if __name__ == '__main__':
-    conn = sqlite3.connect('todo.db')
-    cursor = conn.cursor()
-    query = "SELECT * FROM todo;"
-    cursor.execute(query)
-    rows = cursor.fetchall()
-    todo_dict_main = {row[1]: (row[2], row[0]) for row in rows}
-    print(todo_dict_main)
-    conn.close()
     
+    def show_message(self, message):
+        msg_box.setText(message)
+        msg_box.exec()
+
+if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     
-    for title, (content, idd) in todo_dict_main.items():
-        detail = Detail(1)
-        MainPage = Main()
-        LoginPage = Login()
-        RegisterPage = Register()
+    MainPage = Main()
+    LoginPage = Login()
+    RegisterPage = Register()
 
-    detail.show()
+    MainPage.show()
     
     msg_box = QMessageBox()
     msg_box.setWindowTitle('!!!SOMETHING WRONG!!!')
     msg_box.setIcon(QMessageBox.Icon.Critical)
     msg_box.setStyleSheet("background-color: white; color: black;")
     
-    app.exec()    
+    sys.exit(app.exec())
